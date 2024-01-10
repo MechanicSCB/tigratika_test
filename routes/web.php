@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +17,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/xml-parse', [\App\Actions\ParseXmlAndSaveToJson::class, 'run'])->name('xml.parse.');
-
+Route::get('/products/export', [ProductController::class, 'export']);
 
 Route::middleware([
     'auth:sanctum',
