@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,7 +39,19 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'ziggy' => fn() => [
+                ...(new Ziggy)->toArray(),
+                'location' => $request->url(),
+                'request_all' => $request->all(),
+                'routeName' => $request->route()->getAction('as'),
+            ],
+            'flash' => [
+                'message' => fn() => $request->session()->get('message'),
+                'success' => fn() => $request->session()->get('success'),
+                'warning' => fn() => $request->session()->get('warning'),
+                'error' => fn() => $request->session()->get('error'),
+            ],
+            'allCategories' => Category::query()->get(['id', 'name'])->keyBy('id'),
         ]);
     }
 }

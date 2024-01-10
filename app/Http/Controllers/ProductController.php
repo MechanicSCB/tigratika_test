@@ -7,12 +7,14 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Response;
+use Inertia\ResponseFactory;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response|ResponseFactory
     {
         $query = Product::query();
 
